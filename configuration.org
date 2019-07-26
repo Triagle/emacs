@@ -170,6 +170,14 @@ Avy for more jump-foo
       "SPC" 'counsel-projectile-find-file)
     :after projectile)
 #+END_SRC
+** Zoom
+#+BEGIN_SRC emacs-lisp
+  (use-package zoom
+    :init
+    (setq zoom-size '(0.618 . 0.618))
+    :config
+    (zoom-mode))
+#+END_SRC
 * Programming Languages
 ** Snippets
 Note you should also install the =yasnippet-snippets= package for extra snippets.
