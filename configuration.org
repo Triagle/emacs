@@ -1,0 +1,181 @@
+#+TITLE: Emacs Configuration
+
+* Setup
+=use-package= requires being loaded nice and early in the configuration.
+#+BEGIN_SRC emacs-lisp
+  (eval-when-compile
+    (require 'use-package)
+    (setq use-package-always-ensure t))
+#+END_SRC
+
+For the melpa.org packages
+#+BEGIN_SRC emacs-lisp
+  ;; Weird ass workaround because emacs is funny.
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+  (require 'package)
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+		      (not (gnutls-available-p))))
+	 (proto (if no-ssl "http" "https")))
+    (when no-ssl
+      (warn "\
+  Your version of Emacs does not support SSL connections,
+  which is unsafe because it allows man-in-the-middle attacks.
+  There are two things you can do about this warning:
+  1. Install an Emacs version that does support SSL and be safe.
+  2. Remove this warning from your init file so you won't see it again."))
+    ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+    (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+    ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+  (package-initialize)
+#+END_SRC
+* UI
+Remove the initial junk emacs likes to load.
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+END_SRC
+
+Set the current theme to goodness.
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :ensure t
+    :config
+    (load-theme 'doom-dracula t))
+#+END_SRC
+
+Doom Modeline ughh.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
+Set current font.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist
+	       '(font . "Iosevka-10"))
+#+END_SRC
+
+* Evil Mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (evil-mode 1))
+#+END_SRC
+
+General.el for keybinds.
+#+BEGIN_SRC emacs-lisp
+  (use-package general
+    :ensure t
+    :demand
+    :config
+    (general-evil-setup)
+    (general-create-definer leader-define :prefix "SPC" :states 'normal)
+    (general-create-definer local-define :prefix "SPC m" :states 'normal)
+    )
+#+END_SRC
+
+Evil snipe for some quicc scoping of words.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-snipe
+    :ensure t
+    :config
+    (evil-snipe-mode)
+    (evil-snipe-override-mode))
+#+END_SRC
+* Ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t))
+
+  (use-package counsel
+    :general
+    (leader-define
+		   ":" 'counsel-M-x
+		   "." 'counsel-find-file))
+
+  (use-package swiper
+    :general
+    (leader-define
+      "ss" 'swiper))
+#+END_SRC
+* Tools
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :general
+    (leader-define
+      "gs" 'magit-status))
+
+  (use-package evil-magit)
+#+END_SRC
+* Programming Languages
+** Snippets
+Note you should also install the =yasnippet-snippets= package for extra snippets.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config (yas-global-mode 1))
+#+END_SRC
+** LSP
+Language server is a language agnoistic backend that provides syntax checking and completeions. Certain languages require external tools, e.g
+- Python :: Use the [[https://github.com/palantir/python-language-server][Python Language Server]].
+#+BEGIN_SRC emacs-lisp
+  ;; Prerequistites: Company and Flycheck
+
+  (use-package company
+    :hook (after-init . global-company-mode))
+  (use-package flycheck
+    :hook (after-init . global-flycheck-mode))
+
+  (use-package lsp
+    :ensure lsp-mode
+    :config
+    (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+    :init
+    (setq lsp-auto-guess-root t)
+    (setq lsp-inhibit-message t))
+
+  (use-package lsp-ui
+    :init
+    (add-hook 'lsp-mode-hook #'lsp-ui-sideline-mode))
+
+  (use-package company-lsp
+    :after company
+    :config
+    (push 'company-lsp company-backends))
+#+END_SRC
+** Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :general
+    (leader-define
+      "SPC" 'projectile-find-file)
+    :config
+    (projectile-mode))
+#+END_SRC
+
+** Python
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode-hook #'lsp)
+#+END_SRC
+
+Pipenv.el uses =pipenv= to manage python environments.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pipenv
+    :hook (python-mode . pipenv-mode)
+    :init
+    (setq
+     pipenv-projectile-after-switch-function
+     #'pipenv-projectile-after-switch-extended))
+#+END_SRC
+** C/C++
