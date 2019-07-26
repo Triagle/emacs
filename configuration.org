@@ -81,6 +81,9 @@ General.el for keybinds.
 
     (leader-define
       ;; Window keybinds
+      "w C-o" 'delete-other-windows
+      "wo" 'other-window
+      "wq" 'save-buffers-kill-emacs
       "wv" 'split-window-vertically
       "wh" 'split-window-horizontally
       "wl" 'evil-window-right
@@ -95,6 +98,7 @@ General.el for keybinds.
       ;; Buffer
       "bb" 'switch-to-buffer
       "bk" 'kill-buffer))
+
 #+END_SRC
 
 Evil snipe for some quicc scoping of words.
