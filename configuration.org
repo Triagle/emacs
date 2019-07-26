@@ -78,7 +78,23 @@ General.el for keybinds.
     (general-evil-setup)
     (general-create-definer leader-define :prefix "SPC" :states 'normal)
     (general-create-definer local-define :prefix "SPC m" :states 'normal)
-    )
+
+    (leader-define
+      ;; Window keybinds
+      "wv" 'split-window-vertically
+      "wh" 'split-window-horizontally
+      "wl" 'evil-window-right
+      "wh" 'evil-window-left
+      "wk" 'evil-window-up
+      "wj" 'evil-window-down
+
+      ;; File keybinds
+      "fs" 'save-buffer
+      "fd" 'dired
+
+      ;; Buffer
+      "bb" 'switch-to-buffer
+      "bk" 'kill-buffer))
 #+END_SRC
 
 Evil snipe for some quicc scoping of words.
@@ -89,6 +105,15 @@ Evil snipe for some quicc scoping of words.
     :config
     (evil-snipe-mode)
     (evil-snipe-override-mode))
+#+END_SRC
+
+Avy for more jump-foo
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :general
+    (general-nmap
+      "gl" 'avy-goto-line
+      "gc" 'avy-goto-char-timer))
 #+END_SRC
 * Ivy
 #+BEGIN_SRC emacs-lisp
@@ -101,7 +126,9 @@ Evil snipe for some quicc scoping of words.
     :general
     (leader-define
 		   ":" 'counsel-M-x
-		   "." 'counsel-find-file))
+		   "." 'counsel-find-file
+		   "si" 'counsel-imenu
+		   "s/" 'counsel-projectile-grep))
 
   (use-package swiper
     :general
@@ -109,7 +136,7 @@ Evil snipe for some quicc scoping of words.
       "ss" 'swiper))
 #+END_SRC
 * Tools
-
+** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :general
@@ -117,6 +144,19 @@ Evil snipe for some quicc scoping of words.
       "gs" 'magit-status))
 
   (use-package evil-magit)
+#+END_SRC
+
+** Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :config
+    (projectile-mode))
+
+  (use-package counsel-projectile
+    :general
+    (leader-define
+      "SPC" 'counsel-projectile-find-file)
+    :after projectile)
 #+END_SRC
 * Programming Languages
 ** Snippets
@@ -153,19 +193,41 @@ Language server is a language agnoistic backend that provides syntax checking an
     :config
     (push 'company-lsp company-backends))
 #+END_SRC
-** Projectile
+** REPL
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :general
-    (leader-define
-      "SPC" 'projectile-find-file)
-    :config
-    (projectile-mode))
-#+END_SRC
+  (setq repl-handler '())
 
+  (defun add-repl-handler (mode repl)
+    (push (cons mode repl) repl-handler))
+
+  (defun repl ()
+    "Open repl for current major mode"
+    (interactive)
+    (call-interactively (cdr (assoc major-mode repl-handler))))
+
+#+END_SRC
+** Formatting
+Formatting usually requires language specific binaries, see [[https://github.com/emacsmirror/format-all][the readme]] for more info.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package format-all
+    :config
+    (format-all-mode))
+#+END_SRC
+** Smartparens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :config
+    (require 'smartparens-config)
+    (smartparens-global-mode))
+#+END_SRC
 ** Python
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'python-mode-hook #'lsp)
+  (use-package python-mode
+    :config
+    (add-repl-handler 'python-mode #'py-shell)
+    (add-hook 'python-mode-hook #'lsp)
+    (add-hook 'python-mode-hook #'format-all-mode))
 #+END_SRC
 
 Pipenv.el uses =pipenv= to manage python environments.
@@ -179,3 +241,21 @@ Pipenv.el uses =pipenv= to manage python environments.
      #'pipenv-projectile-after-switch-extended))
 #+END_SRC
 ** C/C++
+#+BEGIN_SRC emacs-lisp
+  (use-package ccls
+    :hook ((c-mode c++-mode objc-mode) . (lambda () (require 'ccls) (lsp))))
+
+  (add-hook 'c-mode-hook #'format-all-mode)
+#+END_SRC
+* Misc
+** Backups
+#+BEGIN_SRC emacs-lisp
+  (setq
+     backup-by-copying t      ; don't clobber symlinks
+     backup-directory-alist
+      '(("." . "~/.saves/"))    ; don't litter my fs tree
+     delete-old-versions t
+     kept-new-versions 6
+     kept-old-versions 2
+     version-control t)       ; use versioned backups
+#+END_SRC
