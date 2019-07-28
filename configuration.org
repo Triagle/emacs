@@ -68,6 +68,14 @@ Set current font.
     (dashboard-setup-startup-hook))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (use-package popwin
+    :config
+    (popwin-mode 1)
+    (push "*Python*" popwin:special-display-config)
+    (push "*Flycheck errors*" popwin:special-display-config))
+#+END_SRC
+
 * Evil Mode
 
 #+BEGIN_SRC emacs-lisp
@@ -170,7 +178,7 @@ Avy for more jump-foo
       "SPC" 'counsel-projectile-find-file)
     :after projectile)
 #+END_SRC
-** Zoom
+** COMMENT Zoom
 #+BEGIN_SRC emacs-lisp
   (use-package zoom
     :init
