@@ -147,7 +147,8 @@ Avy for more jump-foo
   (use-package ivy
     :config
     (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t))
+    (setq enable-recursive-minibuffers t)
+    (ivy-mode))
 
   (use-package counsel
     :general
@@ -155,7 +156,9 @@ Avy for more jump-foo
 		   ":" 'counsel-M-x
 		   "." 'counsel-find-file
 		   "si" 'counsel-imenu
-		   "s/" 'counsel-projectile-grep))
+		   "s/" 'counsel-projectile-grep)
+    :config
+    (counsel-mode))
 
   (use-package swiper
     :general
