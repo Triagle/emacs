@@ -287,6 +287,15 @@ Pipenv.el uses =pipenv= to manage python environments.
     :hook ((c-mode c++-mode objc-mode) . (lambda () (require 'ccls) (lsp))))
 
   (add-hook 'c-mode-hook #'format-all-mode)
+** Haskell
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode)
+
+  (use-package lsp-haskell
+    :config
+    (add-hook 'haskell-mode-hook #'lsp))
+
+  (use-package haskell-snippets)
 #+END_SRC
 * Misc
 ** Backups
