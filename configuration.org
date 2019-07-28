@@ -96,25 +96,32 @@ General.el for keybinds.
     (general-create-definer local-define :prefix "SPC m" :states 'normal)
 
     (leader-define
+      ;; Code
+      "cl" 'comment-line
       ;; Window keybinds
       "w C-o" 'delete-other-windows
       "wo" 'other-window
-      "wq" 'save-buffers-kill-emacs
       "wv" 'split-window-vertically
-      "wh" 'split-window-horizontally
+      "w-" 'split-window-horizontally
       "wl" 'evil-window-right
       "wh" 'evil-window-left
       "wk" 'evil-window-up
       "wj" 'evil-window-down
+      "wq" 'delete-window
+
+      ;; Quit
+      "qq" 'save-buffers-kill-emacs
 
       ;; File keybinds
       "fs" 'save-buffer
       "fd" 'dired
+      "fr" 'counsel-recentf
 
       ;; Buffer
-      "bb" 'switch-to-buffer
+      "bb" 'counsel-switch-buffer
       "bk" 'kill-buffer))
 
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 Evil snipe for some quicc scoping of words.
