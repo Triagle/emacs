@@ -31,6 +31,11 @@ For the melpa.org packages
       (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
   (package-initialize)
 #+END_SRC
+
+Move any custom file stuff to custom.el
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom.el")
+#+END_SRC
 * UI
 Remove the initial junk emacs likes to load.
 #+BEGIN_SRC emacs-lisp
