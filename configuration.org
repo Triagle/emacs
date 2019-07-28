@@ -212,7 +212,10 @@ Language server is a language agnoistic backend that provides syntax checking an
   (use-package company
     :hook (after-init . global-company-mode))
   (use-package flycheck
-    :hook (after-init . global-flycheck-mode))
+    :hook (after-init . global-flycheck-mode)
+    :general
+    (leader-define
+      "cx" 'flycheck-list-errors))
 
   (use-package lsp
     :ensure lsp-mode
