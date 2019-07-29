@@ -78,7 +78,7 @@ Set current font.
   (use-package popwin
     :config
     (popwin-mode 1)
-    (push "*Python*" popwin:special-display-config)
+    (push '("*Python*" :stick t) popwin:special-display-config)
     (push "*Flycheck errors*" popwin:special-display-config))
 #+END_SRC
 
@@ -282,9 +282,10 @@ Formatting usually requires language specific binaries, see [[https://github.com
 ** Python
 #+BEGIN_SRC emacs-lisp
   (add-repl-handler 'python-mode #'run-python)
-  (add-hook 'python-mode-hook #'lsp)
+  (add-hook 'python-mode-hook #'lsp-mode)
   (add-hook 'python-mode-hook #'format-all-mode)
   (add-hook 'python-mode-hook #'(lambda () (setq-local counsel-dash-docsets '("Python 3"))))
+
 #+END_SRC
 
 Pipenv.el uses =pipenv= to manage python environments.
