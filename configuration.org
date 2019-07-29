@@ -2,12 +2,6 @@
 
 * Setup
 =use-package= requires being loaded nice and early in the configuration.
-#+BEGIN_SRC emacs-lisp
-  (eval-when-compile
-    (require 'use-package)
-    (setq use-package-always-ensure t))
-#+END_SRC
-
 For the melpa.org packages
 #+BEGIN_SRC emacs-lisp
   ;; Weird ass workaround because emacs is funny.
@@ -30,6 +24,12 @@ For the melpa.org packages
       ;; For important compatibility libraries like cl-lib
       (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
   (package-initialize)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (eval-when-compile
+    (require 'use-package))
+  (setq use-package-always-ensure t)
 #+END_SRC
 
 Move any custom file stuff to custom.el
