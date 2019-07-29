@@ -47,7 +47,6 @@ Remove the initial junk emacs likes to load.
 Set the current theme to goodness.
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
-    :ensure t
     :config
     (load-theme 'doom-dracula t))
 #+END_SRC
@@ -85,7 +84,6 @@ Set current font.
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil
-    :ensure t
     :config
     (evil-mode 1))
 #+END_SRC
@@ -93,8 +91,6 @@ Set current font.
 General.el for keybinds.
 #+BEGIN_SRC emacs-lisp
   (use-package general
-    :ensure t
-    :demand
     :config
     (general-evil-setup)
     (general-create-definer leader-define :prefix "SPC" :states 'normal)
@@ -133,7 +129,6 @@ Evil snipe for some quicc scoping of words.
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-snipe
-    :ensure t
     :config
     (evil-snipe-mode)
     (evil-snipe-override-mode))
