@@ -67,6 +67,7 @@ Set current font.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
+    :if (>= emacs-major-version 26)
     :init
     (setq dashboard-startup-banner 'logo)
     :config
