@@ -270,7 +270,10 @@ Formatting usually requires language specific binaries, see [[https://github.com
 ** Documentation
 #+BEGIN_SRC emacs-lisp
   (use-package counsel-dash
+    :init
+    (defalias 'remove-duplicates 'cl-remove-duplicates)
     :config
+    (setq counsel-dash-browser-func 'browse-url-firefox)
     (defalias 'doc 'counsel-dash))
 
   (use-package dumb-jump
