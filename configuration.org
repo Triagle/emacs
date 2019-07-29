@@ -327,3 +327,9 @@ Pipenv.el uses =pipenv= to manage python environments.
      kept-old-versions 2
      version-control t)       ; use versioned backups
 #+END_SRC
+** Extra Hacks
+Any extra hacks I wanna use on local machines go here
+#+BEGIN_SRC emacs-lisp
+  (if (file-exists-p "~/.emacs.d/hacks.el")
+      (load "~/.emacs.d/hacks.el"))
+#+END_SRC
