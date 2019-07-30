@@ -47,7 +47,6 @@ Remove the initial junk emacs likes to load.
 Set the current theme to goodness.
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
-    :ensure t
     :config
     (load-theme 'doom-dracula t))
 #+END_SRC
@@ -86,16 +85,19 @@ Set current font.
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil
-    :ensure t
+    :init
+    (setq evil-want-keybinding nil)
     :config
     (evil-mode 1))
+
+  (use-package evil-collection
+    :after evil
+    :config (evil-collection-init))
 #+END_SRC
 
 General.el for keybinds.
 #+BEGIN_SRC emacs-lisp
   (use-package general
-    :ensure t
-    :demand
     :config
     (general-evil-setup)
     (general-create-definer leader-define :prefix "SPC" :states 'normal)
@@ -134,7 +136,6 @@ Evil snipe for some quicc scoping of words.
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-snipe
-    :ensure t
     :config
     (evil-snipe-mode)
     (evil-snipe-override-mode))
@@ -271,7 +272,10 @@ Formatting usually requires language specific binaries, see [[https://github.com
 ** Documentation
 #+BEGIN_SRC emacs-lisp
   (use-package counsel-dash
+    :init
+    (defalias 'remove-duplicates 'cl-remove-duplicates)
     :config
+    (setq counsel-dash-browser-func 'browse-url-firefox)
     (defalias 'doc 'counsel-dash))
 
   (use-package dumb-jump
