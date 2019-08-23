@@ -347,6 +347,11 @@ Pipenv.el uses =pipenv= to manage python environments.
 
   (use-package haskell-snippets)
 #+END_SRC
+** Prolog
+Prolog requires some work to get emacs to accept that =.pl= files are Prolog files as opposed to Perl files.
+#+BEGIN_SRC emacs-lisp
+  (push '("\\.pl\\'" . prolog-mode) auto-mode-alist)
+#+END_SRC
 * Misc
 ** Backups
 #+BEGIN_SRC emacs-lisp
