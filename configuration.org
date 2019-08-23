@@ -187,12 +187,18 @@ Avy for more jump-foo
 ** Projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :general
+    (leader-define
+      "pi" 'projectile-invalidate-cache
+      "pc" 'projectile-compile-project)
     :config
     (projectile-mode))
 
   (use-package counsel-projectile
     :general
     (leader-define
+      "pp" 'counsel-projectile-switch-project
+      "p/" 'counsel-projectile-grep
       "SPC" 'counsel-projectile-find-file)
     :after projectile)
 #+END_SRC
