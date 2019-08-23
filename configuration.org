@@ -299,7 +299,11 @@ Formatting usually requires language specific binaries, see [[https://github.com
   (use-package dumb-jump
     :general
     (general-nmap
-      "gd" 'dumb-jump-go))
+      "gb" 'dumb-jump-back
+      "gd" 'dumb-jump-go
+      "gp" 'dumb-jump-go-prompt
+      "gD" 'dumb-jump-go-other-window)
+    )
 #+END_SRC
 ** Python
 #+BEGIN_SRC emacs-lisp
