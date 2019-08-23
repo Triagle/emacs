@@ -163,7 +163,7 @@ Avy for more jump-foo
 		   ":" 'counsel-M-x
 		   "." 'counsel-find-file
 		   "si" 'counsel-imenu
-		   "s/" 'counsel-projectile-grep)
+		   "s/" 'counsel-projectile-rg)
     :config
     (counsel-mode))
 
