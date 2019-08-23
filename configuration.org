@@ -359,3 +359,10 @@ Pipenv.el uses =pipenv= to manage python environments.
      kept-old-versions 2
      version-control t)       ; use versioned backups
 #+END_SRC
+
+** Trailing Whitespace
+Nuke it from orbit
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
