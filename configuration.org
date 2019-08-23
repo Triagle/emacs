@@ -305,6 +305,11 @@ Formatting usually requires language specific binaries, see [[https://github.com
       "gD" 'dumb-jump-go-other-window)
     )
 #+END_SRC
+** Spell Check
+#+BEGIN_SRC emacs-lisp
+  (setq ispell-program-name "hunspell"          ; Use hunspell to correct mistakes
+	ispell-dictionary   "en_NZ") ; Default dictionary to use
+#+END_SRC
 ** Python
 #+BEGIN_SRC emacs-lisp
   (add-repl-handler 'python-mode #'run-python)
