@@ -202,6 +202,17 @@ Avy for more jump-foo
       "SPC" 'counsel-projectile-find-file)
     :after projectile)
 #+END_SRC
+** Org
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-org
+    :after org
+    :config
+    (evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+    :hook (org-mode-hook . evil-org-mode))
+
+  (use-package org)
+#+END_SRC
 ** COMMENT Zoom
 #+BEGIN_SRC emacs-lisp
   (use-package zoom
