@@ -100,12 +100,12 @@ General.el for keybinds.
   (use-package general
     :config
     (general-evil-setup)
-    (general-create-definer leader-define :prefix "SPC" :states 'normal)
-    (general-create-definer local-define :prefix "SPC m" :states 'normal)
+    (general-create-definer leader-define :prefix "SPC" :states '(normal visual motion) :keymaps 'override)
+    (general-create-definer local-define :prefix "SPC m" :states '(normal visual motion) :keymaps 'override)
 
     (leader-define
       ;; Code
-      "cl" 'comment-line
+      "cl" 'comment-dwim
       ;; Window keybinds
       "w C-o" 'delete-other-windows
       "wo" 'other-window
