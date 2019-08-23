@@ -342,6 +342,7 @@ Pipenv.el uses =pipenv= to manage python environments.
 
   (use-package lsp-haskell
     :config
+    (add-hook 'haskell-mode-hook #'(lambda () (setq-local counsel-dash-docsets '("Haskell"))))
     (add-hook 'haskell-mode-hook #'lsp))
 
   (use-package haskell-snippets)
