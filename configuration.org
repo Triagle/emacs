@@ -2,12 +2,6 @@
 
 * Setup
 =use-package= requires being loaded nice and early in the configuration.
-#+BEGIN_SRC emacs-lisp
-  (eval-when-compile
-    (require 'use-package)
-    (setq use-package-always-ensure t))
-#+END_SRC
-
 For the melpa.org packages
 #+BEGIN_SRC emacs-lisp
   ;; Weird ass workaround because emacs is funny.
@@ -30,6 +24,12 @@ For the melpa.org packages
       ;; For important compatibility libraries like cl-lib
       (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
   (package-initialize)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (eval-when-compile
+    (require 'use-package))
+  (setq use-package-always-ensure t)
 #+END_SRC
 
 Move any custom file stuff to custom.el
@@ -313,9 +313,10 @@ Formatting usually requires language specific binaries, see [[https://github.com
 ** Python
 #+BEGIN_SRC emacs-lisp
   (add-repl-handler 'python-mode #'run-python)
-  (add-hook 'python-mode-hook #'lsp)
+  (add-hook 'python-mode-hook #'lsp-mode)
   (add-hook 'python-mode-hook #'format-all-mode)
   (add-hook 'python-mode-hook #'(lambda () (setq-local counsel-dash-docsets '("Python 3"))))
+
 #+END_SRC
 
 Pipenv.el uses =pipenv= to manage python environments.
@@ -366,8 +367,12 @@ Prolog requires some work to get emacs to accept that =.pl= files are Prolog fil
 #+END_SRC
 
 ** Trailing Whitespace
-Nuke it from orbit
-
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+** Extra Hacks
+Any extra hacks I wanna use on local machines go here
+#+BEGIN_SRC emacs-lisp
+  (if (file-exists-p "~/.emacs.d/hacks.el")
+      (load "~/.emacs.d/hacks.el"))
 #+END_SRC
