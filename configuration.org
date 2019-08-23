@@ -76,7 +76,7 @@ Set current font.
   (use-package popwin
     :config
     (popwin-mode 1)
-    (push "*Python*" popwin:special-display-config)
+    (push '("*Python*" :stick t) popwin:special-display-config)
     (push "*Flycheck errors*" popwin:special-display-config))
 #+END_SRC
 
