@@ -178,6 +178,7 @@ Avy for more jump-foo
   (use-package magit
     :general
     (leader-define
+      "gc" 'magit-clone
       "gs" 'magit-status))
 
   (use-package evil-magit)
